@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My Love ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    color: white;
+    overflow-x: hidden;
+}
+
+.container {
+    padding: 40px 20px;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.message {
+    font-size: 1.3em;
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8em;
+    white-space: pre-line;
+}
+
+button {
+    background: white;
+    color: #ff4d6d;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff4d6d;
+    color: white;
+}
+
+.heart {
+    position: fixed;
+    top: -10px;
+    font-size: 20px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Happy Birthday My Love ❤️</h1>
+    <p class="message" id="typedText"></p>
+
+    <button onclick="showSurprise()">Click For a Surprise 🎁</button>
+</div>
+
+<script>
+
+// Typing Effect
+const text = `
+Happy Birthday to the most beautiful girl in my world ❤️
+
+We met in school... just two kids with dreams,
+and I never imagined that one day,
+you would become my forever 💕
+
+From those innocent school days,
+to now being together for 7 beautiful years,
+every single moment with you has been magical ✨
+
+7 years of laughter,
+7 years of memories,
+7 years of growing together,
+7 years of loving you more each day 💞
+
+You were my first crush in school,
+my best friend,
+and now you are my whole heart ❤️
+
+Thank you for standing by me,
+for believing in me,
+for loving me even on my worst days.
+
+Your smile still gives me butterflies 🦋
+Your voice is still my favorite sound 🎶
+Your happiness is still my biggest goal 🌸
+
+I promise to keep loving you,
+to keep choosing you,
+and to build our future together.
+
+Happy Birthday my queen 👑
+May this year bring you as much happiness
+as you bring into my life every single day.
+
+Forever yours 💖
+`;
+
+let i = 0;
+function typeWriter() {
+    if (i < text.length) {
+        document.getElementById("typedText").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 40);
+    }
+}
+typeWriter();
+
+// Floating Hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+}
+setInterval(createHeart, 500);
+
+// Updated Surprise Popup
+function showSurprise() {
+    alert("🎉 Happy Birthday Chuha ❤️ 🎂");
+}
+
+</script>
+
+</body>
+</html>
