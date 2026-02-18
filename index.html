@@ -3,34 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday My Love ❤️</title>
+<title>Happy Birthday ❤️</title>
 
 <style>
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    background: black;
     font-family: 'Segoe UI', sans-serif;
-    text-align: center;
     color: white;
+    text-align: center;
     overflow-x: hidden;
 }
 
-.container {
+/* Star Background */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    animation: moveStars 60s linear infinite;
+    z-index: -1;
+}
+@keyframes moveStars {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 1000px; }
+}
+
+/* Candle Section */
+#candleSection {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+}
+
+.candle {
+    width: 20px;
+    height: 120px;
+    background: pink;
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.flame {
+    width: 20px;
+    height: 30px;
+    background: radial-gradient(circle, yellow 40%, orange 60%, red);
+    border-radius: 50%;
+    position: absolute;
+    top: -30px;
+    left: 0;
+    animation: flicker 0.2s infinite alternate;
+}
+
+@keyframes flicker {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+/* Message Section */
+#messageSection {
+    display: none;
     padding: 40px 20px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    animation: fadeIn 2s ease forwards;
 }
 
-h1 {
-    font-size: 3em;
-    margin-bottom: 10px;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.message {
+#typedText {
     font-size: 1.3em;
     max-width: 800px;
     margin: auto;
     line-height: 1.8em;
-    white-space: pre-line;
 }
 
 button {
@@ -43,6 +96,7 @@ button {
     cursor: pointer;
     margin-top: 20px;
     transition: 0.3s;
+    display: none;
 }
 
 button:hover {
@@ -50,101 +104,164 @@ button:hover {
     color: white;
 }
 
+/* Floating Hearts */
 .heart {
     position: fixed;
-    top: -10px;
+    bottom: -10px;
     font-size: 20px;
-    animation: fall linear infinite;
+    animation: floatUp 5s linear infinite;
 }
 
-@keyframes fall {
+@keyframes floatUp {
     to {
-        transform: translateY(100vh);
+        transform: translateY(-100vh);
+        opacity: 0;
     }
 }
 
+/* Popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: white;
+    color: #ff4d6d;
+    padding: 30px;
+    border-radius: 20px;
+    width: 85%;
+    max-width: 320px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    animation: popUp 0.5s forwards;
+}
+
+@keyframes popUp {
+    to {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.popup button {
+    display: inline-block;
+    margin-top: 15px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>Happy Birthday My Love ❤️</h1>
-    <p class="message" id="typedText"></p>
+<div class="stars"></div>
 
-    <button onclick="showSurprise()">Click For a Surprise 🎁</button>
+<!-- Candle Section -->
+<div id="candleSection">
+    <h2>Make a wish… 💫</h2>
+    <p>Tap the candle to blow it 🕯️</p>
+    <div class="candle" onclick="blowCandle()">
+        <div class="flame" id="flame"></div>
+    </div>
 </div>
+
+<!-- Message Section -->
+<div id="messageSection">
+    <h1>Happy Birthday My Love ❤️</h1>
+    <p id="typedText"></p>
+    <button id="surpriseBtn" onclick="openPopup()">Click For Surprise 🎁</button>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popupBox">
+    <h3>For You ❤️</h3>
+    <p>
+        7 years ago we met in school…<br><br>
+        And today, I still choose you every single day 💖<br><br>
+        You are my forever. Happy Birthday Chuha 🎂
+    </p>
+    <button onclick="closePopup()">Close</button>
+</div>
+
+<!-- Birthday Music -->
+<audio id="bgMusic" preload="auto" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c61c4bfa4.mp3?filename=happy-birthday-royalty-free-116008.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 
-// Typing Effect
-const text = `
-Happy Birthday to the most beautiful girl in my world ❤️
+const fullMessage = `
+We met in school… just two innocent hearts 💕
 
-We met in school... just two kids with dreams,
-and I never imagined that one day,
-you would become my forever 💕
+And now it's been 7 beautiful years together ✨
 
-From those innocent school days,
-to now being together for 7 beautiful years,
-every single moment with you has been magical ✨
+7 years of love.
+7 years of memories.
+7 years of growing together.
+7 years of choosing each other every day. 💞
 
-7 years of laughter,
-7 years of memories,
-7 years of growing together,
-7 years of loving you more each day 💞
-
-You were my first crush in school,
+You are my first crush,
 my best friend,
-and now you are my whole heart ❤️
+my forever.
 
-Thank you for standing by me,
-for believing in me,
-for loving me even on my worst days.
-
-Your smile still gives me butterflies 🦋
-Your voice is still my favorite sound 🎶
-Your happiness is still my biggest goal 🌸
-
-I promise to keep loving you,
-to keep choosing you,
-and to build our future together.
-
-Happy Birthday my queen 👑
-May this year bring you as much happiness
-as you bring into my life every single day.
-
-Forever yours 💖
+Happy Birthday Chuha ❤️🎂
 `;
 
-let i = 0;
-function typeWriter() {
-    if (i < text.length) {
-        document.getElementById("typedText").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 40);
-    }
-}
-typeWriter();
+let index = 0;
+let speed = 40;
 
-// Floating Hearts
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = Math.random() * 3 + 3 + "s";
-    document.body.appendChild(heart);
+function blowCandle() {
+    document.getElementById("flame").style.display = "none";
+
+    const music = document.getElementById("bgMusic");
+    music.volume = 0.7;
+
+    music.play().catch(() => {
+        console.log("Tap again if music doesn't start.");
+    });
 
     setTimeout(() => {
-        heart.remove();
-    }, 6000);
+        document.getElementById("candleSection").style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById("candleSection").style.display = "none";
+            document.getElementById("messageSection").style.display = "block";
+            typeWriter();
+        }, 1000);
+    }, 800);
 }
-setInterval(createHeart, 500);
 
-// Updated Surprise Popup
-function showSurprise() {
-    alert("🎉 Happy Birthday Chuha ❤️ 🎂");
+function typeWriter() {
+    const textElement = document.getElementById("typedText");
+    const surpriseButton = document.getElementById("surpriseBtn");
+
+    function type() {
+        if (index < fullMessage.length) {
+            textElement.innerHTML += fullMessage.charAt(index) === "\n" ? "<br>" : fullMessage.charAt(index);
+            index++;
+            setTimeout(type, speed);
+        } else {
+            surpriseButton.style.display = "inline-block";
+            startHearts();
+        }
+    }
+
+    type();
+}
+
+function startHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }, 500);
+}
+
+function openPopup() {
+    document.getElementById("popupBox").style.display = "block";
+}
+
+function closePopup() {
+    document.getElementById("popupBox").style.display = "none";
 }
 
 </script>
